@@ -4,7 +4,7 @@
 
 # Descrição
 
-Este guia é um passo a passo que apresenta o processo de auto scaling para Jitsi e Jibri-docker na AWS. Utilizaremos instâncias EC2 para o Jitsi e o Jibri, com cada instância do Jibri contendo 4 contêineres. O auto scaling será realizado de forma horizontal, aproveitando recursos como CloudWatch, Amazon EC2 Auto Scaling e AWS S3.
+Este guia é um passo a passo que apresenta o processo de auto scaling para Jitsi e Jibri-docker na AWS. Utilizaremos instâncias EC2 para o Jitsi e o Jibri, com cada instância do Jibri contendo 4 contêineres. O auto scaling será realizado de forma horizontal, aproveitando recursos como Alarme CloudWatch, Amazon EC2, Auto Scaling Groups e AWS S3.
 
 No servidor do Jitsi, será implantado um script cronjob  para verificar a disponibilidade de instâncias do Jibri. Quando apenas uma instância do Jibri estiver disponível, um alerta será enviado para a AWS, solicitando o início de uma nova instância do Jibri.
 
@@ -17,6 +17,10 @@ Além disso, no servidor do Jibri, um script cronjob será configurado para cons
 - [# Ajustando um ambiente Jitsi Meet para o Jibri](#ajustando-um-ambiente-jitsi-meet-para-o-jibri)
 - [# Criação de Máquina EC2 do Jibri](#criação-de-máquina-ec2-do-jibri)
 - [# Instalação do Jibri-docker](#instalação-do-jibri-docker)
+- [# Configurando Alarme CloudWatch](#configurando-alarme-cloudWatch)
+- [# Configurando AWS Auto Scaling Groups](#configurando-aws-auto-scaling-groups)
+- [# Script cronjob jitsi](#script-cronjob-jitsi)
+- [# Script cronjob jibri](#script-cronjob-jibri)
 - [# Envio dos videos para AWS S3](#Envio-dos-videos-para-AWS-S3)
 
 # Criação de Máquinas EC2 do Jitsi
@@ -217,7 +221,7 @@ VirtualHost "recorder.seudominio.com"
 
 * Salve o arquivo e saia dele
 
-:warning: Certifique-se de substituir yourdomain.com pelo domínio adequado do seu ambiente Jitsi Meet.
+:warning: Certifique-se de substituir seudominio.com pelo domínio adequado do seu ambiente Jitsi Meet.
 Essa configuração permitirá que apenas as sessões autenticadas do Jibri Chrome sejam participantes ocultos na conferência que está sendo gravada, fornecendo restrições de acesso adequadas
 
 ### Pelo seu terminal Configure as duas contas que o jibri usará.
@@ -358,6 +362,23 @@ wget https://github.com/jitsi/docker-jitsi-meet/archive/refs/tags/stable-8719.ta
 tar -zxvf stable-8719.tar.gz
 ```
 
-* Acesse a pasta com `cd docker-jitsi-meet-stable-8719  `
+* Acesse a pasta com 
+
+```bash
+cd docker-jitsi-meet-stable-8719  
+```
+
+* Crie um `.env` arquivo copiando e ajustando env.example
+
+```bash
+cp env.example .env
+```
+# Configurando Alarme CloudWatch
+
+# Configurando AWS Auto Scaling Groups
+
+# Script cronjob jitsi
+
+# Script cronjob jibri
 
 # Envio dos video para AWS S3
