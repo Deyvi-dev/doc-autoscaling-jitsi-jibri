@@ -180,8 +180,10 @@ sudo /usr/share/jitsi-meet/scripts/install-letsencrypt-cert.sh
 
 # Ajustando um ambiente Jitsi Meet para o Jibri
 
-## Configurando um ambiente do Jitsi Meet para o Jibri requer a ativação de certas configurações. Isso inclui a configuração de virtualhosts e contas no Prosody, bem como ajustes específicos para a interface web do Jitsi Meet
+### Configurando um ambiente do Jitsi Meet para o Jibri requer a ativação de certas configurações. Isso inclui a configuração de virtualhosts e contas no Prosody, bem como ajustes específicos para a interface web do Jitsi Meet
+
 ## Configure o Prosody
+
 ### Crie a entrada do componente MUC interno. Isso é necessário para que os clientes do Jibri possam ser descobertos pelo Jicofo em um MUC que não seja acessível externamente pelos usuários do Jitsi Meet
 
 * execute 
