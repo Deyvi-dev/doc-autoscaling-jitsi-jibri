@@ -21,7 +21,7 @@ Além disso, no servidor do Jibri, um script cronjob será configurado para cons
 - [# Configurando AWS Auto Scaling Groups](#configurando-aws-auto-scaling-groups)
 - [# Script cronjob jitsi](#script-cronjob-jitsi)
 - [# Script cronjob jibri](#script-cronjob-jibri)
-- [# Envio dos videos para AWS S3](#Envio-dos-videos-para-AWS-S3)
+- [# Envio dos videos para AWS S3](#envio-dos-videos-para-aws-s3)
 
 # Criação de Máquinas EC2 do Jitsi
 
@@ -373,12 +373,402 @@ cd docker-jitsi-meet-stable-8719
 ```bash
 cp env.example .env
 ```
+* Seu `.env` tem que se parecer com esse aqui:
+```bash
+# shellcheck disable=SC2034
+
+################################################################################
+################################################################################
+# Welcome to the Jitsi Meet Docker setup!
+#
+# This sample .env file contains some basic options to get you started.
+# The full options reference can be found here:
+# https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-docker
+################################################################################
+################################################################################
+
+
+#
+# Basic configuration options
+#
+
+# Directory where all configuration will be stored
+CONFIG=~/.jitsi-meet-cfg
+
+# Exposed HTTP port
+HTTP_PORT=80
+
+# Exposed HTTPS port
+HTTPS_PORT=443
+
+# System time zone
+TZ=UTC
+
+# Public URL for the web service (required)
+PUBLIC_URL=https://seudominio.com
+#configurações deyvi
+XMPP_BOSH_URL_BASE=http://xmpp.seudominio.com
+XMPP_RECORDER_DOMAIN=recorder.seudominio.com
+XMPP_AUTH_DOMAIN=auth.seudominio.com
+JIBRI_BREWERY_MUC=JibriBrewery
+XMPP_INTERNAL_MUC_DOMAIN=internal.auth.seudominio.com
+XMPP_DOMAIN=seudominio.com
+XMPP_SERVER=seudominio.com
+# Media IP addresses to advertise by the JVB
+# This setting deprecates DOCKER_HOST_ADDRESS, and supports a comma separated list of IPs
+# See the "Running behind NAT or on a LAN environment" section in the Handbook:
+# https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-docker#running-behind-nat-or-on-a-lan-environment
+#JVB_ADVERTISE_IPS=192.168.1.1,1.2.3.4
+
+
+#
+# JaaS Components (beta)
+# https://jaas.8x8.vc
+#
+
+# Enable JaaS Components (hosted Jigasi)
+# NOTE: if Let's Encrypt is enabled a JaaS account will be automatically created, using the provided email in LETSENCRYPT_EMAIL
+#ENABLE_JAAS_COMPONENTS=0
+
+#
+# Let's Encrypt configuration
+#
+
+# Enable Let's Encrypt certificate generation
+# ENABLE_LETSENCRYPT=1
+
+# Domain for which to generate the certificate
+LETSENCRYPT_DOMAIN=seudominio.com
+
+# E-Mail for receiving important account notifications (mandatory)
+LETSENCRYPT_EMAIL=seuemail@gmail.com
+
+# Use the staging server (for avoiding rate limits while testing)
+#LETSENCRYPT_USE_STAGING=1
+
+
+#
+# Etherpad integration (for document sharing)
+#
+
+# Set etherpad-lite URL in docker local network (uncomment to enable)
+#ETHERPAD_URL_BASE=http://etherpad.meet.jitsi:9001
+
+# Set etherpad-lite public URL, including /p/ pad path fragment (uncomment to enable)
+#ETHERPAD_PUBLIC_URL=https://etherpad.my.domain/p/
+
+# Name your etherpad instance!
+ETHERPAD_TITLE=Video Chat
+
+# The default text of a pad
+ETHERPAD_DEFAULT_PAD_TEXT="Welcome to Web Chat!\n\n"
+
+# Name of the skin for etherpad
+ETHERPAD_SKIN_NAME=colibris
+
+# Skin variants for etherpad
+ETHERPAD_SKIN_VARIANTS="super-light-toolbar super-light-editor light-background full-width-editor"
+
+
+#
+# Basic Jigasi configuration options (needed for SIP gateway support)
+#
+
+# SIP URI for incoming / outgoing calls
+#JIGASI_SIP_URI=test@sip2sip.info
+
+# Password for the specified SIP account as a clear text
+#JIGASI_SIP_PASSWORD=passw0rd
+
+# SIP server (use the SIP account domain if in doubt)
+#JIGASI_SIP_SERVER=sip2sip.info
+
+# SIP server port
+#JIGASI_SIP_PORT=5060
+
+# SIP server transport
+#JIGASI_SIP_TRANSPORT=UDP
+
+
+#
+# Authentication configuration (see handbook for details)
+#
+
+# Enable authentication
+#ENABLE_AUTH=1
+
+# Enable guest access
+ENABLE_GUESTS=1
+
+# Select authentication type: internal, jwt, ldap or matrix
+#AUTH_TYPE=internal
+
+# JWT authentication
+#
+
+# Application identifier
+#JWT_APP_ID=my_jitsi_app_id
+
+# Application secret known only to your token generator
+#JWT_APP_SECRET=my_jitsi_app_secret
+
+# (Optional) Set asap_accepted_issuers as a comma separated list
+#JWT_ACCEPTED_ISSUERS=my_web_client,my_app_client
+
+# (Optional) Set asap_accepted_audiences as a comma separated list
+#JWT_ACCEPTED_AUDIENCES=my_server1,my_server2
+
+# LDAP authentication (for more information see the Cyrus SASL saslauthd.conf man page)
+#
+
+# LDAP url for connection
+#LDAP_URL=ldaps://ldap.domain.com/
+
+# LDAP base DN. Can be empty
+#LDAP_BASE=DC=example,DC=domain,DC=com
+
+# LDAP user DN. Do not specify this parameter for the anonymous bind
+#LDAP_BINDDN=CN=binduser,OU=users,DC=example,DC=domain,DC=com
+
+# LDAP user password. Do not specify this parameter for the anonymous bind
+#LDAP_BINDPW=LdapUserPassw0rd
+
+# LDAP filter. Tokens example:
+# %1-9 - if the input key is user@mail.domain.com, then %1 is com, %2 is domain and %3 is mail
+# %s - %s is replaced by the complete service string
+# %r - %r is replaced by the complete realm string
+#LDAP_FILTER=(sAMAccountName=%u)
+
+# LDAP authentication method
+#LDAP_AUTH_METHOD=bind
+
+# LDAP version
+#LDAP_VERSION=3
+
+# LDAP TLS using
+#LDAP_USE_TLS=1
+
+# List of SSL/TLS ciphers to allow
+#LDAP_TLS_CIPHERS=SECURE256:SECURE128:!AES-128-CBC:!ARCFOUR-128:!CAMELLIA-128-CBC:!3DES-CBC:!CAMELLIA-128-CBC
+
+# Require and verify server certificate
+#LDAP_TLS_CHECK_PEER=1
+
+# Path to CA cert file. Used when server certificate verify is enabled
+#LDAP_TLS_CACERT_FILE=/etc/ssl/certs/ca-certificates.crt
+
+# Path to CA certs directory. Used when server certificate verify is enabled
+#LDAP_TLS_CACERT_DIR=/etc/ssl/certs
+
+# Wether to use starttls, implies LDAPv3 and requires ldap:// instead of ldaps://
+# LDAP_START_TLS=1
+
+
+#
+# Security
+#
+# Set these to strong passwords to avoid intruders from impersonating a service account
+# The service(s) won't start unless these are specified
+# Running ./gen-passwords.sh will update .env with strong passwords
+# You may skip the Jigasi and Jibri passwords if you are not using those
+# DO NOT reuse passwords
+#
+
+# XMPP password for Jicofo client connections
+JICOFO_AUTH_PASSWORD=NixlzFm0x4kJ4SWO
+
+# XMPP password for JVB client connections
+JVB_AUTH_PASSWORD=NixlzFm0x4kJ4SWO
+
+# XMPP password for Jigasi MUC client connections
+JIGASI_XMPP_PASSWORD=NixlzFm0x4kJ4SWO
+
+# XMPP recorder password for Jibri client connections
+JIBRI_RECORDER_PASSWORD=jibrirecorderpass
+
+# XMPP password for Jibri client connections
+JIBRI_XMPP_PASSWORD=jibriauthpass
+
+#
+# Docker Compose options
+#
+
+# Container restart policy
+RESTART_POLICY=unless-stopped
+
+# Jitsi image version (useful for local development)
+JITSI_IMAGE_VERSION=stable-8719
+#jibri recording and livestreaming
+ENABLE_RECORDING=1
+ENABLE_LIVESTREAMING=1
+ENABLE_SUBDOMAINS=1
+JIBRI_RECORDING_RESOLUTION=1920x1080
+JIBRI_STRIP_DOMAIN_JID=conference
+# JIBRI_RECORDING_DIR=/config/recordings
+JIBRI_FINALIZE_RECORDING_SCRIPT_PATH="/config/finalize.sh"
+DISPLAY=:0=
+```
+
+## Crie config  de diretorios do jibri
+
+### nesse diretorio config jibri é aonde deve estar o scritp finalize.sh
+
+* execute essse comando
+```bash
+mkdir -p ~/.jitsi-meet-cfg/{web,transcripts,prosody/config,prosody/prosody-plugins-custom,jicofo,jvb,jigasi,jibri}
+```
+
+## Altere o Dockerfile do Jibri
+### Edite o dockerfile para ficar dessa forma aqui para que permita usar comandos aws nos containeres jibri:
+
+```bash
+ARG JITSI_REPO=jitsi
+ARG BASE_TAG=stable-8719
+FROM ${JITSI_REPO}/base-java:${BASE_TAG}
+
+LABEL org.opencontainers.image.title="Jitsi Broadcasting Infrastructure (jibri)"
+LABEL org.opencontainers.image.description="Components for recording and/or streaming a conference."
+LABEL org.opencontainers.image.url="https://github.com/jitsi/jibri"
+LABEL org.opencontainers.image.source="https://github.com/jitsi/docker-jitsi-meet"
+LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
+
+ARG TARGETPLATFORM
+ARG USE_CHROMIUM=0
+# ARG CHROME_RELEASE=latest
+# ARG CHROMEDRIVER_MAJOR_RELEASE=latest
+ARG CHROME_RELEASE=114.0.5735.90
+ARG CHROMEDRIVER_MAJOR_RELEASE=114
+
+COPY rootfs/ /
+
+    # Atualiza a lista de pacotes 
+RUN apt-get update && apt-get -y install apt-transport-https ca-certificates curl && \
+    curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
+    # Instalação do Python 3
+RUN apt-get update && \
+    apt-get install -y python3 && \
+    ln -s /usr/bin/python3 /usr/bin/python
+# Instalação do AWS CLI
+RUN apt-get update && \
+    apt-get install -y python3-pip && \
+    pip3 install --upgrade awscli
+
+RUN chmod +x /usr/bin/install-chrome.sh
+
+RUN apt-get update && \
+    apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" jibri libgl1-mesa-dri procps jitsi-upload-integrations jitsi-autoscaler-sidecar jq pulseaudio dbus dbus-x11 rtkit unzip && \
+    /usr/bin/install-chrome.sh && \
+    apt-cleanup && \
+    adduser jibri rtkit
+
+
+VOLUME /config
+
+```
+## Altere o jibri.yml
+### Adcione jribi2 e jibri3 e jibri4 respectivamente com seus volumes com isso terá 4 containers:
+* O jibri.yml ficarar dessa forma:
+
+```bash
+version: '3.5'
+
+services:
+    jibri:
+        image: my-jibri
+        restart: ${RESTART_POLICY:-unless-stopped}
+        volumes:
+        - ${CONFIG}/jibri:/config:Z
+        shm_size: '7gb'
+        cap_add:
+            - SYS_ADMIN
+        environment:
+            - AUTOSCALER_SIDECAR_KEY_FILE
+            - AUTOSCALER_SIDECAR_KEY_ID
+            - AUTOSCALER_SIDECAR_GROUP_NAME
+            - AUTOSCALER_SIDECAR_INSTANCE_ID
+            - AUTOSCALER_SIDECAR_PORT
+            - AUTOSCALER_SIDECAR_REGION
+            - AUTOSCALER_URL
+            - CHROMIUM_FLAGS
+            - DISPLAY=:0
+            - ENABLE_STATS_D
+            - JIBRI_WEBHOOK_SUBSCRIBERS
+            - JIBRI_HTTP_API_EXTERNAL_PORT
+            - JIBRI_HTTP_API_INTERNAL_PORT
+            - JIBRI_RECORDING_RESOLUTION
+            - JIBRI_USAGE_TIMEOUT
+            - JIBRI_XMPP_USER
+            - JIBRI_XMPP_PASSWORD
+            - JIBRI_BREWERY_MUC
+            - JIBRI_RECORDER_USER
+            - JIBRI_RECORDER_PASSWORD
+            - JIBRI_RECORDING_DIR
+            - JIBRI_FINALIZE_RECORDING_SCRIPT_PATH
+            - JIBRI_STRIP_DOMAIN_JID
+            - JIBRI_STATSD_HOST
+            - JIBRI_STATSD_PORT
+            - LOCAL_ADDRESS
+            - PUBLIC_URL
+            - TZ
+            - XMPP_AUTH_DOMAIN
+            - XMPP_DOMAIN
+            - XMPP_INTERNAL_MUC_DOMAIN
+            - XMPP_MUC_DOMAIN
+            - XMPP_RECORDER_DOMAIN
+            - XMPP_SERVER
+            - XMPP_PORT
+            - XMPP_TRUST_ALL_CERTS
+    jibri2:
+        extends:
+            service: jibri
+        volumes:
+            - ${CONFIG}/jibri2:/config:Z
+        environment:
+            - JIBRI_ID=jibri2
+
+    jibri3:
+        extends:
+            service: jibri
+        volumes:
+            - ${CONFIG}/jibri3:/config:Z
+        environment:
+            - JIBRI_ID=jibri3
+    jibri4:
+        extends:
+            service: jibri
+        volumes:
+            - ${CONFIG}/jibri4:/config:Z
+        environment:
+            - JIBRI_ID=jibri4
+volumes:
+    jibri1_data:
+    jibri2_data:
+```
+## No diretorio ` ~/.jitsi-meet-cfg/jibri ` crie os diretorios dos jibris
+### Irá ficar dessa forma:
+![elastic-ip](images//jitsi/diretorio-jibri.png)
+
+## executando o jibri docker:
+### Faça a instalação do docker e docker-compose
+
+* Esteja dentro do diretorio raiz `docker-jitsi-meet` e execute esse comando para inciar os containeres:
+
+```bash
+docker-compose -f jibri.yml up -d
+```
+
 # Configurando Alarme CloudWatch
-
+### Acesse o console da aws e vá em [CloudWatch Alames](https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#alarmsV2:)
+* Crie um alarme seguindo essas etapas:
+1. crie uma metrica personalizada
+2. Adcione esatica maxima,periodo 1 minuto, valor limite = 1
+![elastic-ip](images//jitsi/metrica1.png)
+![elastic-ip](images//jitsi/metrica2.png)
+3. Adicione o nome do alarme e finalize as etapas de criação
 # Configurando AWS Auto Scaling Groups
-
+### 
 # Script cronjob jitsi
 
 # Script cronjob jibri
 
-# Envio dos video para AWS S3
+# Envio dos videos para AWS S3
