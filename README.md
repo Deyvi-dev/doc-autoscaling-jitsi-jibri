@@ -262,7 +262,7 @@ jibri {
 
 ![config jicofo](images/jitsi/config-jicofo.png)
 
-## Configure UI o Jitsi meet
+## Configure UI do Jitsi meet
 
 ### Para habilitar botões de gravações e transmissão ao vivo
 
@@ -376,8 +376,8 @@ cp env.example .env
 * Seu `.env` tem que se parecer com esse aqui:
 
 ```bash
-`# Exposed HTTP port`
-```
+# Exposed HTTP port
+
 HTTP_PORT=80
 
 # Exposed HTTPS port
