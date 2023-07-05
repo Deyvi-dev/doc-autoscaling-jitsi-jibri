@@ -374,27 +374,8 @@ cd docker-jitsi-meet-stable-8719
 cp env.example .env
 ```
 * Seu `.env` tem que se parecer com esse aqui:
+
 ```bash
-# shellcheck disable=SC2034
-
-################################################################################
-################################################################################
-# Welcome to the Jitsi Meet Docker setup!
-#
-# This sample .env file contains some basic options to get you started.
-# The full options reference can be found here:
-# https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-docker
-################################################################################
-################################################################################
-
-
-#
-# Basic configuration options
-#
-
-# Directory where all configuration will be stored
-CONFIG=~/.jitsi-meet-cfg
-
 # Exposed HTTP port
 HTTP_PORT=80
 
@@ -414,17 +395,10 @@ JIBRI_BREWERY_MUC=JibriBrewery
 XMPP_INTERNAL_MUC_DOMAIN=internal.auth.seudominio.com
 XMPP_DOMAIN=seudominio.com
 XMPP_SERVER=seudominio.com
-# Media IP addresses to advertise by the JVB
-# This setting deprecates DOCKER_HOST_ADDRESS, and supports a comma separated list of IPs
-# See the "Running behind NAT or on a LAN environment" section in the Handbook:
-# https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-docker#running-behind-nat-or-on-a-lan-environment
-#JVB_ADVERTISE_IPS=192.168.1.1,1.2.3.4
 
 
-#
 # JaaS Components (beta)
 # https://jaas.8x8.vc
-#
 
 # Enable JaaS Components (hosted Jigasi)
 # NOTE: if Let's Encrypt is enabled a JaaS account will be automatically created, using the provided email in LETSENCRYPT_EMAIL
