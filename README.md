@@ -376,7 +376,8 @@ cp env.example .env
 * Seu `.env` tem que se parecer com esse aqui:
 
 ```bash
-# Exposed HTTP port
+`# Exposed HTTP port`
+```
 HTTP_PORT=80
 
 # Exposed HTTPS port
