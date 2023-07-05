@@ -741,7 +741,7 @@ docker-compose -f jibri.yml up -d
 ![elastic-ip](images//jitsi/metrica2.png)
 3. Adicione o nome do alarme e finalize as etapas de criação
 # Configurando AWS Auto Scaling Groups
-### 
+
 # Script cronjob jitsi
 
 # Script cronjob jibri
