@@ -275,7 +275,7 @@ recordingService: {
 
 fileRecordingsEnabled: true, // If you want to enable file recording
 liveStreamingEnabled: true, // If you want to enable live streaming
-hiddenDomain: 'recorder.seudominio.com',
+hiddenDomain: 'recorder.yourdomain.com',
 ```
 
 * Por fim reinicie o jicofo jitsi e prosody
